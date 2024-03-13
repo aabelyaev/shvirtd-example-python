@@ -1,30 +1,38 @@
-# shvirtd-example-python
+# Домашнее задание к занятию 5. «Практическое применение Docker»
 
-Example Flask-application for docker compose training.
-## Installation
-First, you need to clone this repository:
+## Задние 2
+aabelyaev@aabelyaev-Redmi-Book-Pro-15-2022:~/studynetelogy/studynetelogy/docker-homework-5$ yc container image scan crpg2ie0lajiv8os7tdc         
+done (2m2s)
+id: chehhhlkh695h******
+image_id: crpg2ie0laji******
+scanned_at: "2024-03-04T08:50:18.839Z"
+status: READY
+vulnerabilities:
+  critical: "1"
+  high: "19"
+  medium: "23"
+  low: "67"
 
-```bash
-git clone https://github.com/netology-code/shvirtd-example-python.git
-```
+## Задние 3
+Команда docker logs shvirtd-example-python-web-1 выводит такую проблему как её решить?
 
-Now, we will need to create a virtual environment and install all the dependencies:
+The above exception was the direct cause of the following exception:
 
-```bash
-python3 -m venv venv  # on Windows, use "python -m venv venv" instead
-. venv/bin/activate   # on Windows, use "venv\Scripts\activate" instead
-pip install -r requirements.txt
-python main.py
-```
-You need to run Mysql database and provide following ENV-variables for connection:  
-- DB_HOST (default: '127.0.0.1')
-- DB_USER (default: 'app')
-- DB_PASSWORD (default: 'very_strong')
-- DB_NAME (default: 'example')
+Traceback (most recent call last):
+  File "/app/main.py", line 14, in <module>
+    db = mysql.connector.connect(
+  File "/usr/local/lib/python3.9/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/mysql/connector/connection_cext.py", line 140, in __init__
+    self.connect(**kwargs)
+  File "/usr/local/lib/python3.9/site-packages/mysql/connector/abstracts.py", line 1363, in connect
+    self._open_connection()
+  File "/usr/local/lib/python3.9/site-packages/mysql/connector/connection_cext.py", line 328, in _open_connection
+    raise get_mysql_exception(
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (99)
 
-The applications will always running on http://localhost:5000.  
-To exit venv just type ```deactivate```
+## Задние 4
 
-## License
 
-This project is licensed under the MIT License (see the `LICENSE` file for details).
+## Задние 5
+
