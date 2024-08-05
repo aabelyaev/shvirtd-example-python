@@ -14,7 +14,7 @@ then
 fi
 
 if [ ! -d "/home/shvirtd-example-python" ] ; then
-    sudo git clone https://github.com/gaming4funNel/shvirtd-example-python /opt/shvirtd-example-python
+    sudo git clone https://github.com/aabelyaev/shvirtd-example-python /opt/shvirtd-example-python
 else
     cd /home/shvirtd-example-python
     sudo git pull

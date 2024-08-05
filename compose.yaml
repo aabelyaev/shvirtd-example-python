@@ -1,48 +1,54 @@
-include:
-  - proxy.yaml
-
-x-deploy: &deploy-dev
-  deploy:
-    resources:
-      limits:
-        cpus: "1"
-        memory: 512M
-      reservations:
-        memory: 256M
-
-x-env_file: &env_file
-  env_file:
-    - .env
-
-x-restart: &restart
-  restart: always
-
+version: '3.8'
 services:
-  db:
-    image: mariadb:10.6.4-focal
-    container_name: db
-    networks:
-      backend:
-        ipv4_address: 172.20.0.10
-    <<: [*deploy-dev, *env_file, *restart]
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_HOST="%"
-    
+
   web:
     build:
       context: .
       dockerfile: Dockerfile.python
-    image: web_app:latest
-    networks:
-      backend:
-        ipv4_address: 172.20.0.5
-    <<: [*env_file, *restart]
+    depends_on:
+      - "db"
+    ports:
+      - "8091:5000"
+    restart: always
+    env_file:
+    - ./.env
     environment:
-      - DB_NAME=${MYSQL_DATABASE}
-      - DB_PASSWORD=${MYSQL_PASSWORD}
-      - DB_USER=${MYSQL_USER}
       - DB_HOST=db
+      - DB_USER=test_db
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=test_db
+    networks:
+        backend:
+          ipv4_address: 172.20.0.5
+
+  db:
+    image: mysql:8
+    command: "--default-authentication-plugin=mysql_native_password"
+    volumes:
+      - ./db_data:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          memory: 256M
+    env_file:
+    - ./.env
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=test_db
+      - MYSQL_USER=test_db
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_HOST="%"
+    networks:
+        backend:
+          ipv4_address: 172.20.0.10
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.20.0.0/24
