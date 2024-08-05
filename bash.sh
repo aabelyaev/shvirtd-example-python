@@ -20,4 +20,4 @@ else
     sudo git pull
 fi
 
-cd /home/centos/shvirtd-example-python
+cd /opt/shvirtd-example-python
